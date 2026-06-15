@@ -1,0 +1,32 @@
+a) O fluxo de procedimentos até o treinamento do modelo (pipeline);
+
+A estratégia foi construir um ecossistema com três modelos independentes usando o metaestimador Random Forest. No pipeline de dados,
+primeiro filtrei o dataset limpando os IDs e valores de preços para evitar o vazamento de dados. Depois, peguei todas as colunas de
+contextoe usei o pd.get_dummies para converter o texto em colunas binárias. E então, por fim dividi o conjunto em 70% para treinamento
+e 30% para testes.
+
+b) Acurácia global, acurácia por classes (use a matriz de confusão para tanto) e a medida f1-score;
+
+Analisando o desempenho dos três modelos independentes de Random Forest, esses foram os resultados obtidos:
+
+Categoria do Produto: Acertamos 29,40% das vezes no geral. O modelo teve uma facilidade muito maior para cravar a categoria de 
+índice 2 (que teve mais de 2.200 acertos direto na matriz de confusão). O ponto forte foi a Especificidade de 92,16%, 
+mostrando que o sistema é muito bom em saber o que o cliente não vai comprar.
+
+Forma de Pagamento: A acurácia geral ficou em 16,49%. Como os erros ficaram muito espalhados na matriz de confusão, deu para 
+ver que as pessoas usam métodos de pagamento muito parecidos, o que torna difícil para o algoritmo adivinhar o comportamento exato.
+
+Faixa Etária: Tivemos 20,10% de acurácia global. O relatório e a matriz mostraram uma distribuição quase idêntica de palpites 
+entre as idades, confirmando que a idade não dita uma regra tão clara de compra isolada no dataset.
+
+c) O funcionamento do sistema inteligente inficando categoria do produto, forma de pagamento e faixa etária
+
+Com o módulo de inferência foi possível demonstrar a capacidade de tomada de decisão do sistema. Quando é recebido um dado desconhecido,
+o script consulta os três arquivos .pkl que são gerados e utiliza a função predict_proba para extrair os scores de probabilidade de cada um.
+Os resultados finais foram:
+
+Categoria do produto(books): com um grau de certeza de 35,33%.
+
+Forma de pagamento(cash): com um grau de certeza de 25,17%.
+
+Faixa etária do comprador(56+): com um grau de certeza de 29,02%.
